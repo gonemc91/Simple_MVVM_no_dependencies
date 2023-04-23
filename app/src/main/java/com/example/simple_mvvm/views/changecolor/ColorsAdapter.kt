@@ -1,13 +1,12 @@
 package com.example.simple_mvvm.views.changecolor
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simple_mvvm.databinding.FragmentCurrentColorBinding
 import com.example.simple_mvvm.databinding.ItemColorBinding
 import com.example.simple_mvvm.model.colors.NamedColor
+import com.example.simple_mvvm.views.changecolor.ColorsAdapter.Listener
 
 
 /**

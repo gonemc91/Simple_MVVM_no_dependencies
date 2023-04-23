@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.foundation.views.BaseFragment
+import com.example.foundation.views.BaseScreen
+import com.example.foundation.views.screenViewModel
 import com.example.simple_mvvm.databinding.FragmentCurrentColorBinding
-import com.example.simple_mvvm.views.base.BaseFragment
-import com.example.simple_mvvm.views.base.BaseScreen
-import com.example.simple_mvvm.views.base.screenViewModel
 import kotlinx.parcelize.Parcelize
 
 class CurrentColorFragment : BaseFragment() {

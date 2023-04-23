@@ -1,4 +1,4 @@
-package com.example.simple_mvvm.model.utils
+package com.example.foundation.utils
 
 
 /**

@@ -1,7 +1,6 @@
-package com.example.simple_mvvm.views.base
+package com.example.foundation.views
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
 
 interface BaseScreen: Parcelable {

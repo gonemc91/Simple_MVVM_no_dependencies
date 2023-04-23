@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.foundation.views.BaseFragment
+import com.example.foundation.views.BaseScreen
+import com.example.foundation.views.HasScreenTitle
+import com.example.foundation.views.screenViewModel
 import com.example.simple_mvvm.R
 import com.example.simple_mvvm.databinding.FragmentChangeColorBinding
-import com.example.simple_mvvm.views.HasScreenTitle
-import com.example.simple_mvvm.views.base.BaseFragment
-import com.example.simple_mvvm.views.base.BaseScreen
-import com.example.simple_mvvm.views.base.screenViewModel
 import kotlinx.parcelize.Parcelize
 
 
@@ -24,7 +24,7 @@ import kotlinx.parcelize.Parcelize
  */
 
 
-class ChangeColorFragment: BaseFragment(),HasScreenTitle {
+class ChangeColorFragment: BaseFragment(), HasScreenTitle {
 
     /**
      * This screen has 1 argument: colors ID to be displayed as selected

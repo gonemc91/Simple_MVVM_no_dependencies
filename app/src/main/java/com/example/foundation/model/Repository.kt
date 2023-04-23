@@ -1,4 +1,4 @@
-package com.example.simple_mvvm.model
+package com.example.foundation.model
 
 /**
  * Base Interface for all repositories

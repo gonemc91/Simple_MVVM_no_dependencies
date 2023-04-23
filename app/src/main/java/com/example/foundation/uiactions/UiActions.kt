@@ -1,4 +1,4 @@
-package com.example.simple_mvvm.views
+package com.example.foundation.uiactions
 
 interface UiActions {
 
