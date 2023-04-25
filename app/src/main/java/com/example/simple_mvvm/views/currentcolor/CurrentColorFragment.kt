@@ -9,6 +9,7 @@ import com.example.foundation.views.BaseFragment
 import com.example.foundation.views.BaseScreen
 import com.example.foundation.views.screenViewModel
 import com.example.simple_mvvm.databinding.FragmentCurrentColorBinding
+import com.example.simple_mvvm.views.renderSimpleResult
 import kotlinx.parcelize.Parcelize
 
 class CurrentColorFragment : BaseFragment() {
@@ -26,8 +27,14 @@ class CurrentColorFragment : BaseFragment() {
     ): View {
         val binding = FragmentCurrentColorBinding.inflate(inflater, container, false)
 
-        viewModel.currentColor.observe(viewLifecycleOwner){
-            binding.colorView.setBackgroundColor(it.value)
+        viewModel.currentColor.observe(viewLifecycleOwner){result->
+            renderSimpleResult(
+                root = binding.root,
+                result = result,
+                onSuccess = {
+                    binding.colorView.setBackgroundColor(it.value)
+                }
+            )
         }
         binding.changeColorButton.setOnClickListener {
             viewModel.changeColor()

@@ -1,15 +1,22 @@
 package com.example.simple_mvvm.views.currentcolor
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.foundation.model.ErrorResult
+import com.example.foundation.model.PendingResult
+import com.example.foundation.model.SuccessResult
+import com.example.foundation.model.takeSuccess
 import com.example.foundation.navigator.Navigator
 import com.example.foundation.uiactions.UiActions
 import com.example.foundation.views.BaseViewModel
+import com.example.foundation.views.LiveResult
+import com.example.foundation.views.MutableLiveResult
 import com.example.simple_mvvm.R
 import com.example.simple_mvvm.model.colors.ColorListener
 import com.example.simple_mvvm.model.colors.ColorsRepository
 import com.example.simple_mvvm.model.colors.NamedColor
 import com.example.simple_mvvm.views.changecolor.ChangeColorFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class CurrentColorViewModel(
     private val navigator: Navigator,
@@ -17,17 +24,20 @@ class CurrentColorViewModel(
     private val colorsRepository: ColorsRepository
 ) : BaseViewModel() {
 
-    private val _currentColor = MutableLiveData<NamedColor>()
-    var currentColor: LiveData<NamedColor> = _currentColor
+    private val _currentColor = MutableLiveResult<NamedColor>(PendingResult())
+    var currentColor: LiveResult<NamedColor> = _currentColor
 
     private val colorListener: ColorListener = {
-        _currentColor.postValue(it)
+        _currentColor.postValue(SuccessResult(it))
     }
 
     //--- example of listening results via model layer
 
     init {
-        colorsRepository.addListener(colorListener)
+        viewModelScope.launch {
+            delay(2000)
+            _currentColor.postValue(ErrorResult(RuntimeException()))
+        }
     }
 
     override fun onCleared() {
@@ -46,7 +56,7 @@ class CurrentColorViewModel(
     //---
 
     fun changeColor(){
-        val currentColor = currentColor.value ?: return
+        val currentColor = currentColor.value.takeSuccess() ?: return
         val screen = ChangeColorFragment.Screen(currentColor.id)
         navigator.launch(screen)
     }
