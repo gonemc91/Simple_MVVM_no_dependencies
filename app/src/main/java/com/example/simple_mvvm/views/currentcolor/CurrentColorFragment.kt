@@ -9,6 +9,7 @@ import com.example.foundation.views.BaseFragment
 import com.example.foundation.views.BaseScreen
 import com.example.foundation.views.screenViewModel
 import com.example.simple_mvvm.databinding.FragmentCurrentColorBinding
+import com.example.simple_mvvm.views.onTryAgain
 import com.example.simple_mvvm.views.renderSimpleResult
 import kotlinx.parcelize.Parcelize
 
@@ -39,7 +40,11 @@ class CurrentColorFragment : BaseFragment() {
         binding.changeColorButton.setOnClickListener {
             viewModel.changeColor()
         }
+        onTryAgain(binding.root){
+            viewModel.tryAgain()
+        }
         return binding.root
     }
+
 
 }

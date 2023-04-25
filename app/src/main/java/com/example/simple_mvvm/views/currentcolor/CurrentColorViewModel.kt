@@ -36,7 +36,7 @@ class CurrentColorViewModel(
     init {
         viewModelScope.launch {
             delay(2000)
-            _currentColor.postValue(ErrorResult(RuntimeException()))
+            colorsRepository.addListener(colorListener)
         }
     }
 
@@ -59,6 +59,15 @@ class CurrentColorViewModel(
         val currentColor = currentColor.value.takeSuccess() ?: return
         val screen = ChangeColorFragment.Screen(currentColor.id)
         navigator.launch(screen)
+    }
+
+    fun tryAgain(){
+        viewModelScope.launch {
+            _currentColor.postValue(PendingResult())
+            delay(2000)
+            colorsRepository.addListener(colorListener)
+        }
+
     }
 
 

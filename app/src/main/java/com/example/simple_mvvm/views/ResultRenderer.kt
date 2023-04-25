@@ -2,6 +2,7 @@ package com.example.simple_mvvm.views
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.view.children
 import com.example.foundation.views.BaseFragment
 import com.example.foundation.model.Result
@@ -27,4 +28,10 @@ fun <T> BaseFragment.renderSimpleResult(root: ViewGroup, result: Result<T>, onSu
         }
 
     )
+}
+
+fun BaseFragment.onTryAgain(root: View, onTryAgainPressed: () -> Unit){
+    root.findViewById<Button>(R.id.tryAgainButton).setOnClickListener{
+        onTryAgainPressed()
+    }
 }

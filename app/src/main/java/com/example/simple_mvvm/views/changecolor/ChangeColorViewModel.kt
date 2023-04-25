@@ -1,15 +1,20 @@
 package com.example.simple_mvvm.views.changecolor
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
+import com.example.foundation.model.ErrorResult
+import com.example.foundation.model.PendingResult
+import com.example.foundation.model.SuccessResult
 import com.example.foundation.navigator.Navigator
 import com.example.foundation.uiactions.UiActions
 import com.example.foundation.views.BaseViewModel
+import com.example.foundation.views.LiveResult
+import com.example.foundation.views.MediatorLiveResult
+import com.example.foundation.views.MutableLiveResult
 import com.example.simple_mvvm.R
 import com.example.simple_mvvm.model.colors.ColorsRepository
 import com.example.simple_mvvm.model.colors.NamedColor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ChangeColorViewModel(
     screen: ChangeColorFragment.Screen,
@@ -20,33 +25,61 @@ class ChangeColorViewModel(
 ) : BaseViewModel(), ColorsAdapter.Listener{
 
     //input sources
-    private  val _availableColors = MutableLiveData<List<NamedColor>>()
+    private  val _availableColors = MutableLiveResult<List<NamedColor>>(PendingResult())
     private val _currentColorId = savedStateHandle.getLiveData("currentColorId", screen.currentColorId)
+    private val _saveInProgress = MutableLiveData(false)
 
     //main destination (contains merged values from _availableColors & _currentColorId)
-    private val _colorsList = MediatorLiveData<List<NamedColorListItem>>()
-    var colorsList: LiveData<List<NamedColorListItem>> = _colorsList
+    private val _viewState = MediatorLiveResult<ViewState>()
+    var viewState: LiveResult<ViewState> = _viewState
+
 
 
     //side destination, also the same result can be achieved by using Transformations.map() function
-    private val _screenTitle = MutableLiveData<String>()
-    var screenTitle: LiveData<String> = _screenTitle
+    var screenTitle: LiveData<String> = viewState.map { result->
+        if (result is SuccessResult){
+            val currentColor = result.data.colorsList.first{it.selected}
+            uiActions.getString(R.string.change_color_screen_title, currentColor.namedColor.name)
+        }else{
+            uiActions.getString(R.string.change_color_screen_title_simple)
+        }
+    }
+
+   private var mockError = true
 
     init {
-        _availableColors.value = colorRepository.getAvailableColors()
+        viewModelScope.launch {
+            delay(2000)
+            _availableColors.value = SuccessResult(colorRepository.getAvailableColors())
+        }
+
         // initializing MediatorLiveData
-        _colorsList.addSource(_availableColors){ mergeSources()}
-        _colorsList.addSource(_currentColorId){ mergeSources()}
+        _viewState.addSource(_availableColors){ mergeSources()}
+        _viewState.addSource(_currentColorId){ mergeSources()}
+        _viewState.addSource(_saveInProgress){mergeSources()}
     }
 
 
 
 
     fun onSavedPressed(){
-        val currentColorId = _currentColorId.value ?: return
-        val currentColor = colorRepository.getById(currentColorId)
-        colorRepository.currentColor = currentColor
-        navigator.goBack(result =  currentColor)
+        viewModelScope.launch {
+            _saveInProgress.postValue(true)
+            delay(1000)
+            if(mockError){
+                _saveInProgress.postValue(false)
+                uiActions.toast(uiActions.getString(R.string.error_happened))
+                mockError = false
+            }else{
+                val currentColorId = _currentColorId.value ?: return@launch
+                val currentColor = colorRepository.getById(currentColorId)
+                colorRepository.currentColor = currentColor
+                navigator.goBack(result =  currentColor)
+            }
+
+
+        }
+
     }
 
      fun onCancelPressed(){
@@ -56,7 +89,16 @@ class ChangeColorViewModel(
 
 
     override fun onColorChosen(namedColor: NamedColor) {
+        if(_saveInProgress.value == true) return
         _currentColorId.value = namedColor.id
+    }
+
+    fun tryAgain() {
+        viewModelScope.launch {
+            _availableColors.postValue(PendingResult())
+            delay(2000)
+            _availableColors.postValue(SuccessResult(colorRepository.getAvailableColors()))
+        }
     }
 
     /**
@@ -71,8 +113,22 @@ class ChangeColorViewModel(
     private fun mergeSources(){
         val colors = _availableColors.value ?: return
         val currentColorId = _currentColorId.value ?: return
-        val currentColor = colors.first{ it.id == currentColorId}
-        _colorsList.value = colors.map { NamedColorListItem(it, currentColorId == it.id) }
-        _screenTitle.value = uiActions.getString(R.string.change_color_screen_title, currentColor.name)
+        val saveInProgress = _saveInProgress.value ?: return
+
+        _viewState.value = colors.map{colorsList->
+            ViewState(
+                colorsList =  colorsList.map { NamedColorListItem(it, currentColorId == it.id)},
+                showSaveButton = !saveInProgress,
+                showCancelButton = !saveInProgress,
+                showSaveProgressBar = saveInProgress
+            )
+           }
+        }
     }
-}
+
+    data class ViewState(
+        val colorsList: List<NamedColorListItem>,
+        val showSaveButton: Boolean,
+        val showCancelButton: Boolean,
+        val showSaveProgressBar: Boolean
+    )
