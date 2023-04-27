@@ -61,17 +61,18 @@ class CurrentColorViewModel(
     }
 
     fun tryAgain(){
-        viewModelScope.launch {
-            _currentColor.postValue(PendingResult())
-            delay(2000)
-            colorsRepository.addListener(colorListener)
-        }
+     load()
 
     }
     private fun load(){
         colorsRepository.getCurrentColor().into(_currentColor)
 
     }
+    private fun load(){
+        colorsRepository.getCurrentColor().into(_currentColor)
+
+    }
+
 
 
 
