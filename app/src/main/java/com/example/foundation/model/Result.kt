@@ -27,6 +27,7 @@ sealed class Result<T> {
         }
     }
 }
+sealed class  FinalResult<T>: Result<T>()
 
 /**
  *Operator is in progress
@@ -40,7 +41,7 @@ class PendingResult<T> : Result<T>()
 
 class SuccessResult<T>(
     val data: T
-) : Result<T>()
+) : FinalResult<T>()
 
 /**
  * Operator has finishes with error
@@ -48,7 +49,7 @@ class SuccessResult<T>(
 
 class ErrorResult<T>(
     val exception: Exception
-) : Result<T>()
+) : FinalResult<T>()
 
 /**
  * Get success value of [Result] if is a possible, otherwise return NULL.
