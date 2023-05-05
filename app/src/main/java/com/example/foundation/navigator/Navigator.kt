@@ -1,5 +1,6 @@
 package com.example.foundation.navigator
 
+import com.example.foundation.model.tasks.TaskListener
 import com.example.foundation.views.BaseScreen
 
 /**
@@ -13,6 +14,7 @@ interface Navigator {
      */
 
     fun launch(screen: BaseScreen)
+
 
     /**
      * Go back to the previous screen and optionally send some result

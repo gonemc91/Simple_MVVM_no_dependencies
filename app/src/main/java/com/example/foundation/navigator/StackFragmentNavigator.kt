@@ -2,7 +2,6 @@ package com.example.foundation.navigator
 
 import android.os.Bundle
 import android.view.View
-import android.view.animation.Animation
 import androidx.annotation.AnimRes
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
