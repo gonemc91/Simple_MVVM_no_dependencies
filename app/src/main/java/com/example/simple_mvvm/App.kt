@@ -2,17 +2,25 @@ package com.example.simple_mvvm
 
 import android.app.Application
 import com.example.foundation.BaseApplication
-import com.example.foundation.model.tasks.dispatchers.MainThreadDispatcher
 import com.example.foundation.model.tasks.ThreadUtils
+import com.example.foundation.model.tasks.dispatchers.MainThreadDispatcher
+import com.example.foundation.model.tasks.factories.ExecutorServiceTaskFactory
+import com.example.foundation.model.tasks.factories.HandlerThreadTasksFactory
+import com.example.foundation.model.tasks.factories.ThreadTasksFactory
 import com.example.simple_mvvm.model.colors.InMemoryColorsRepository
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 
 /**
- * Here we store instance 0f model layer classes
+ * Here we store instance of model layer classes
  */
 class App : Application(), BaseApplication {
 
-    private val tasksFactory = SimpleTasksFactory()
+    private val singleThreadExecutorTaskFactory = ExecutorServiceTaskFactory(Executors.newSingleThreadExecutor())
+    private val cashedThreadExecutorTaskFactory = ExecutorServiceTaskFactory(Executors.newCachedThreadPool())
+    private  val handlerThreadTaskFactory = HandlerThreadTasksFactory()
+
 
     private val threadUtils = ThreadUtils.Default()
     private val dispatcher = MainThreadDispatcher()
@@ -23,9 +31,10 @@ class App : Application(), BaseApplication {
 
 
     override val singletonScopeDependencies: List<Any> = listOf(
-        tasksFactory,
+        cashedThreadExecutorTaskFactory,
         dispatcher,
-        InMemoryColorsRepository(tasksFactory, threadUtils)
+
+        InMemoryColorsRepository(handlerThreadTaskFactory, threadUtils)
     )
 
 }

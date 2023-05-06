@@ -31,7 +31,7 @@ inline fun <reified VM: ViewModel> BaseFragment.screenViewModel() = viewModels<V
     // - screen VM scope dependencies -> screen args
 
 
-    val dependencies = listOf(screen, activityScopeViewModel) + application.repositories
+    val dependencies = listOf(screen, activityScopeViewModel) + application.singletonScopeDependencies
 
 
     //creating factory

@@ -2,8 +2,8 @@ package com.example.simple_mvvm.model.colors
 
 import android.graphics.Color
 import com.example.foundation.model.tasks.Task
-import com.example.foundation.model.tasks.TasksFactory
 import com.example.foundation.model.tasks.ThreadUtils
+import com.example.foundation.model.tasks.factories.TasksFactory
 
 /**
  * Simple in-memory implementation of [ColorsRepository]

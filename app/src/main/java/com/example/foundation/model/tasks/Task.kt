@@ -17,6 +17,8 @@ class CancelledException(
  */
 
 interface Task<T> {
+
+
     /**
      * Blocking method for waiting and getting result.
      * Throws exception in case of error.
@@ -39,7 +41,7 @@ interface Task<T> {
      *  @throws [IllegalStateException] if task has been already executed.
      */
 
-    fun enqueue(listener: TaskListener<T>)
+
     fun enqueue(dispatcher: Dispatcher, listener: TaskListener<T>)
 
     /**

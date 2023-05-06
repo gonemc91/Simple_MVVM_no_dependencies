@@ -5,8 +5,8 @@ import com.example.foundation.model.ErrorResult
 import com.example.foundation.model.FinalResult
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
-import com.example.foundation.model.tasks.TasksFactory
 import com.example.foundation.model.tasks.dispatchers.Dispatcher
+import com.example.foundation.model.tasks.factories.TasksFactory
 import com.example.foundation.navigator.Navigator
 import com.example.foundation.uiactions.UiActions
 import com.example.foundation.views.BaseViewModel
@@ -16,8 +16,6 @@ import com.example.foundation.views.MutableLiveResult
 import com.example.simple_mvvm.R
 import com.example.simple_mvvm.model.colors.ColorsRepository
 import com.example.simple_mvvm.model.colors.NamedColor
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class ChangeColorViewModel(
     screen: ChangeColorFragment.Screen,
@@ -65,12 +63,14 @@ class ChangeColorViewModel(
         _saveInProgress.postValue(true)
 
         tasksFactory.async {
+            //this code is launched asynchronously in other thread
             val currentColorId = _currentColorId.value ?: throw IllegalStateException("Color ID should not be NULL")
             val currentColor = colorRepository.getById(currentColorId).await()
             colorRepository.setCurrentColor(currentColor).await()
             return@async currentColor
         }
-            .safeEnqueue{ onSaved(it) }
+                // method is called in main thread when async code is finished
+            .safeEnqueue(::onSaved)
     }
 
      fun onCancelPressed(){

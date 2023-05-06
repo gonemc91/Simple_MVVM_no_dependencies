@@ -14,14 +14,14 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 
 
-
 class SynchronizedTask<T>(
     private val task: Task<T>
-) : Task<T>{
+) : Task<T> {
 
+    @Volatile
     private var cancelled = false
 
-    private  var executed = false
+    private var executed = false
 
     private var listenerCalled = AtomicBoolean(false)
 
@@ -65,9 +65,6 @@ class SynchronizedTask<T>(
     }
 
 
-    override fun enqueue(listener: TaskListener<T>) {
-        TODO("Not yet implemented")
-    }
 
 
 }

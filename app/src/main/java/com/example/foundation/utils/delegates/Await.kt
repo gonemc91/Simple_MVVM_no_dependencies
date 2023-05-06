@@ -13,6 +13,7 @@ import kotlin.reflect.KProperty
  */
 
 class Await<T> {
+
     private val countDownLatch = CountDownLatch(1)
     private  var value = AtomicReference<T>(null)
 

@@ -15,6 +15,5 @@ interface BaseApplication {
      * view model constructor.
      */
 
-    val repositories: List<Repository>
     val singletonScopeDependencies: List<Any>
 }

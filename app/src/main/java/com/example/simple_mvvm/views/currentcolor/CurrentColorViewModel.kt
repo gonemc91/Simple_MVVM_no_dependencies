@@ -1,7 +1,5 @@
 package com.example.simple_mvvm.views.currentcolor
 
-import androidx.lifecycle.viewModelScope
-import com.example.foundation.model.ErrorResult
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.takeSuccess
@@ -16,8 +14,6 @@ import com.example.simple_mvvm.model.colors.ColorListener
 import com.example.simple_mvvm.model.colors.ColorsRepository
 import com.example.simple_mvvm.model.colors.NamedColor
 import com.example.simple_mvvm.views.changecolor.ChangeColorFragment
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class CurrentColorViewModel(
     private val navigator: Navigator,
@@ -64,16 +60,12 @@ class CurrentColorViewModel(
 
     fun tryAgain(){
      load()
-
     }
+
     private fun load(){
         colorsRepository.getCurrentColor().into(_currentColor)
-
     }
-    private fun load(){
-        colorsRepository.getCurrentColor().into(_currentColor)
 
-    }
 
 
 
