@@ -3,6 +3,11 @@ package com.example.foundation.navigator
 import com.example.foundation.utils.ResourceActions
 import com.example.foundation.views.BaseScreen
 
+/**
+ * Mediator that holds nav actions in the queue if the real navigator is not active.
+ *
+ */
+
 class IntermediateNavigator : Navigator {
 
     private val targetNavigator = ResourceActions<Navigator>()

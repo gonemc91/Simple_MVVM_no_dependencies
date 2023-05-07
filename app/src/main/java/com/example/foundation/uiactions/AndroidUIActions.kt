@@ -3,6 +3,12 @@ package com.example.foundation.uiactions
 import android.content.Context
 import android.widget.Toast
 
+
+/**
+ * Android implementation of [UiActions]. Displaying simple toast message and getting string from resources.
+ *
+ */
+
 class AndroidUIActions(
     private  val appContext: Context
 ) : UiActions {
