@@ -7,7 +7,6 @@ import com.example.foundation.model.tasks.factories.TasksFactory
 
 /**
  * Simple in-memory implementation of [ColorsRepository]
- * TODO!!!!
  */
 
 class InMemoryColorsRepository(
