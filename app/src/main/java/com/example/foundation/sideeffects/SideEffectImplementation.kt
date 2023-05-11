@@ -1,5 +1,6 @@
 package com.example.foundation.sideeffects
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -21,12 +22,12 @@ abstract class SideEffectImplementation {
     open fun onCreate(savedInstanceState: Bundle?){}
     open fun onBackPressed() : Boolean { return false}
     open fun onRequestUpdates() {}
-    open fun onSupportNavigateUP() : Boolean? {
+    open fun onSupportNavigateUp() : Boolean? {
         return null
     }
 
     open fun onSavedInstanceState(outBundle: Bundle){}
-    open fun onActivityResult(requestCode: Int, permission: Array<out String>, granted: IntArray) {}
+    open fun onActivityResult(requestCode: Int, permission: Int, granted: Intent?) {}
     open fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, granted: IntArray) {}
 
     internal fun injectActivity(activity: AppCompatActivity){

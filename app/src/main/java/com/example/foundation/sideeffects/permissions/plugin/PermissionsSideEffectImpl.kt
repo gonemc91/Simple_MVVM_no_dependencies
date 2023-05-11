@@ -14,7 +14,7 @@ class PermissionsSideEffectImpl(
         ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), REQUEST_CODE)
     }
 
-    override fun onRequestPermissionsResult(
+   /* override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         granted: IntArray
@@ -34,7 +34,7 @@ class PermissionsSideEffectImpl(
                 }
             }
         }
-    }
+    }*/
 
     private companion object {
         const val REQUEST_CODE = 1100

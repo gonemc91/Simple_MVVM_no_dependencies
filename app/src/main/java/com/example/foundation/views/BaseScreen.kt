@@ -10,4 +10,9 @@ interface BaseScreen: Parcelable {
      * Please note that all fields inside the screen should be serializable
      */
 
+    companion object {
+        const val ARG_SCREEN = "ARG_SCREEN"
+    }
+
+
 }

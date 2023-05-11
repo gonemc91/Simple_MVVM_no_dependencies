@@ -8,24 +8,24 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.example.foundation.ARGS_SCREEN
 import com.example.foundation.sideeffects.SideEffectImplementation
 import com.example.foundation.sideeffects.navigator.Navigator
 import com.example.foundation.utils.Event
 import com.example.foundation.views.BaseFragment
 import com.example.foundation.views.BaseScreen
 import com.example.foundation.views.HasScreenTitle
+import com.example.foundation.views.BaseScreen.Companion.ARG_SCREEN
+
 
 
 class StackFragmentNavigator(
     @IdRes private val containerId: Int,
     private val defaultTitle: String,
     private val animation: Animations,
-    private val initialScreenCreator: () -> BaseScreen,
-    override val lifecycle: Lifecycle
-) : Navigator, SideEffectImplementation(), LifecycleOwner {
+    private val initialScreenCreator: () -> BaseScreen
+) : Navigator, SideEffectImplementation(), LifecycleObserver {
 
     private var result: Event<Any>? = null
 
@@ -71,7 +71,7 @@ class StackFragmentNavigator(
         }
     }
 
-    override fun onSupportNavigateUP(): Boolean? {
+    override fun onSupportNavigateUp(): Boolean? {
        requireActivity().onBackPressedDispatcher.onBackPressed()
         return true
     }
@@ -81,7 +81,7 @@ class StackFragmentNavigator(
         // as screen classes are inside fragments -> we can create fragment directly from screen
         val fragment = screen.javaClass.enclosingClass.newInstance() as Fragment
         //set screen object as fragment's argument
-        fragment.arguments = bundleOf(ARGS_SCREEN to screen)
+        fragment.arguments = bundleOf(ARG_SCREEN to screen)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         if (addToBackStack) transaction.addToBackStack(null)

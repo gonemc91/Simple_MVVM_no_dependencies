@@ -7,7 +7,7 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.foundation.ARGS_SCREEN
+import com.example.foundation.views.BaseScreen.Companion.ARG_SCREEN
 import com.example.foundation.BaseApplication
 import java.lang.reflect.Constructor
 
@@ -19,7 +19,7 @@ import java.lang.reflect.Constructor
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 inline fun <reified VM: ViewModel> BaseFragment.screenViewModel() = viewModels<VM>{
     val application = requireActivity().application as BaseApplication
-    val screen = requireArguments().getParcelable(ARGS_SCREEN, BaseScreen::class.java) as BaseScreen
+    val screen = requireArguments().getParcelable(ARG_SCREEN, BaseScreen::class.java) as BaseScreen
 
     // using Providers API directly for getting MainViewModel instance
     val activityScopeViewModel = (requireActivity() as FragmentsHolder).getActivityScopeViewModel()
