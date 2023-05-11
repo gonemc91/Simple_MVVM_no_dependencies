@@ -1,6 +1,7 @@
 package com.example.foundation.utils
 
 import android.annotation.SuppressLint
+import com.example.foundation.model.tasks.dispatchers.Dispatcher
 
 
 typealias ResourceAction<T> = (T) -> Unit
@@ -9,13 +10,19 @@ typealias ResourceAction<T> = (T) -> Unit
  * action is added to queue and waits until resource(.MainActivity lifecycle onResume) become available.
  */
 
-class ResourceActions<T> {
+class ResourceActions<T>(
+    private val dispatcher: Dispatcher
+) {
 
     var resource: T? = null
     set(newValue) {
         field = newValue
         if(newValue != null){
-            actions.forEach{it(newValue)}
+            actions.forEach{action->
+                dispatcher.dispatch {
+                    action(newValue)
+                }
+            }
             actions.clear()
         }
     }

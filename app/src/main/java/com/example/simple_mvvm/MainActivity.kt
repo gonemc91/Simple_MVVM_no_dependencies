@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foundation.ActivityScopeViewModel
 import com.example.foundation.navigator.IntermediateNavigator
-import com.example.foundation.navigator.StackFragmentNavigator
+import com.example.foundation.sideeffects.navigator.plugin.StackFragmentNavigator
 import com.example.foundation.uiactions.AndroidUIActions
 import com.example.foundation.utils.viewModelCreator
+import com.example.foundation.views.BaseActivity
 import com.example.foundation.views.FragmentsHolder
 import com.example.simple_mvvm.databinding.ActivityMainBinding
 import com.example.simple_mvvm.views.currentcolor.CurrentColorFragment
@@ -18,7 +19,13 @@ import com.example.simple_mvvm.views.currentcolor.CurrentColorFragment
  */
 
 
-class MainActivity : AppCompatActivity(), FragmentsHolder {
+
+class MainActivity: BaseActivity() {
+
+
+}
+
+/*class MainActivity : AppCompatActivity(), FragmentsHolder {
     private lateinit var navigator: StackFragmentNavigator
 
     private lateinit var binding: ActivityMainBinding
@@ -28,15 +35,15 @@ class MainActivity : AppCompatActivity(), FragmentsHolder {
             uiActions = AndroidUIActions(applicationContext),
             navigator = IntermediateNavigator()
         )
-    }
+    }*/
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       setContentView(R.layout.activity_main)
-
-        navigator = StackFragmentNavigator(
+        setContentView(R.layout.activity_main)
+    }
+       /* navigator = StackFragmentNavigator(
             activity = this,
             containerId = R.id.fragmentContainer,
             defaultTitle = getString(R.string.app_name),
@@ -90,4 +97,5 @@ class MainActivity : AppCompatActivity(), FragmentsHolder {
         super.onBackPressedDispatcher.onBackPressed()
 
     }
+    */
 }

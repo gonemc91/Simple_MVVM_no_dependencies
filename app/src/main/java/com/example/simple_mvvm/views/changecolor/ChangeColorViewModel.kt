@@ -7,7 +7,6 @@ import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.tasks.dispatchers.Dispatcher
 import com.example.foundation.model.tasks.factories.TasksFactory
-import com.example.foundation.navigator.Navigator
 import com.example.foundation.uiactions.UiActions
 import com.example.foundation.views.BaseViewModel
 import com.example.foundation.views.LiveResult

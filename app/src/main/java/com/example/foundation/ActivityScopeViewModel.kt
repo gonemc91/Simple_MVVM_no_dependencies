@@ -3,7 +3,6 @@ package com.example.foundation
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.foundation.navigator.IntermediateNavigator
-import com.example.foundation.navigator.Navigator
 import com.example.foundation.uiactions.UiActions
 
 const val  ARGS_SCREEN = "ARGS_SCREEN"

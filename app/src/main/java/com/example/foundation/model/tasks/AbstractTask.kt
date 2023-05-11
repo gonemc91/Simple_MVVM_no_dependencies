@@ -9,7 +9,7 @@ import com.example.foundation.utils.delegates.Await
 import kotlin.coroutines.cancellation.CancellationException
 
 /**
- * Base class foe easier creation of new tasks.
+ * Base class for easier creation of new tasks.
  * Provides two method which should be implemented: [doEnqueue] and [doCancel]
  */
 
