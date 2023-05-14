@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * Base class for side-effect implementations.
- * Implementations are responsible for the real implementations of side- effect taling into
+ * Implementations are responsible for the real implementations of side- effect taking into
  * account activity lifecycle. You may safely launch dialogs, perform navigation, change UI here.
  * Implementations are tied to activity.
  *
@@ -26,7 +26,7 @@ abstract class SideEffectImplementation {
         return null
     }
 
-    open fun onSavedInstanceState(outBundle: Bundle){}
+    open fun onSaveInstanceState(outBundle: Bundle){}
     open fun onActivityResult(requestCode: Int, permission: Int, granted: Intent?) {}
     open fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, granted: IntArray) {}
 

@@ -4,11 +4,9 @@ import android.app.Application
 import com.example.foundation.BaseApplication
 import com.example.foundation.model.tasks.ThreadUtils
 import com.example.foundation.model.tasks.dispatchers.MainThreadDispatcher
-import com.example.foundation.model.tasks.factories.ExecutorServiceTaskFactory
+import com.example.foundation.model.tasks.factories.ExecutorServiceTasksFactory
 import com.example.foundation.model.tasks.factories.HandlerThreadTasksFactory
-import com.example.foundation.model.tasks.factories.ThreadTasksFactory
 import com.example.simple_mvvm.model.colors.InMemoryColorsRepository
-import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
 
@@ -17,9 +15,11 @@ import java.util.concurrent.Executors
  */
 class App : Application(), BaseApplication {
 
-    private val singleThreadExecutorTaskFactory = ExecutorServiceTaskFactory(Executors.newSingleThreadExecutor())
-    private val cashedThreadExecutorTaskFactory = ExecutorServiceTaskFactory(Executors.newCachedThreadPool())
-    private  val handlerThreadTaskFactory = HandlerThreadTasksFactory()
+
+    // instances of all created task factories
+    private val singleThreadExecutorTasksFactory = ExecutorServiceTasksFactory(Executors.newSingleThreadExecutor())
+    private val handlerThreadTasksFactory = HandlerThreadTasksFactory()
+    private val cachedThreadPoolExecutorTasksFactory = ExecutorServiceTasksFactory(Executors.newCachedThreadPool())
 
 
     private val threadUtils = ThreadUtils.Default()
@@ -31,10 +31,10 @@ class App : Application(), BaseApplication {
 
 
     override val singletonScopeDependencies: List<Any> = listOf(
-        cashedThreadExecutorTaskFactory,
-        dispatcher,
+        cachedThreadPoolExecutorTasksFactory, // task factory to be used in view-models
+        dispatcher, // dispatcher to be used in view-models
 
-        InMemoryColorsRepository(handlerThreadTaskFactory, threadUtils)
+        InMemoryColorsRepository(cachedThreadPoolExecutorTasksFactory, threadUtils)
     )
 
 }

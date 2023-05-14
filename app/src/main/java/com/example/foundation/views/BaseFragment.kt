@@ -8,6 +8,7 @@ import com.example.foundation.model.ErrorResult
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.Result
+import com.example.foundation.views.activity.ActivityDelegateHolder
 
 /**
  * Base class for all fragment
@@ -27,7 +28,7 @@ abstract class BaseFragment: Fragment() {
     fun notifyScreenUpdates(){
         // if you have more than 1 activity -> you should use a separate interface instead of direct
         // cast to MainActivity
-        (requireActivity() as FragmentsHolder).notifyScreenUpdates()
+        (requireActivity() as ActivityDelegateHolder).delegate.notifyScreenUpdates()
     }
 
     fun <T> renderResult(root: ViewGroup, result: Result<T>,

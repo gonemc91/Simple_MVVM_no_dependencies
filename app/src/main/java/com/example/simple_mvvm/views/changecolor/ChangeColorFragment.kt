@@ -31,7 +31,7 @@ class ChangeColorFragment: BaseFragment(), HasScreenTitle {
     /**
      * This screen has 1 argument: colors ID to be displayed as selected
      */
-    @Parcelize
+
     class Screen(
         val currentColorId: Long
     ) : BaseScreen

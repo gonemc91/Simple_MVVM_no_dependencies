@@ -8,7 +8,8 @@ import com.example.foundation.sideeffects.SideEffectPluginsManager
 /**
  * Base class to simplify the activity implementation.
  */
-abstract class BaseActivity : AppCompatActivity(),ActivityDelegateHolder {
+abstract class BaseActivity : AppCompatActivity(), ActivityDelegateHolder {
+
     private var _delegate: ActivityDelegate? = null
     override val delegate: ActivityDelegate
         get() = _delegate!!
@@ -16,7 +17,7 @@ abstract class BaseActivity : AppCompatActivity(),ActivityDelegateHolder {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _delegate = ActivityDelegate(this).also {
-            registerPlugins(it.sideEffectPluginManager)
+            registerPlugins(it.sideEffectPluginsManager)
             it.onCreate(savedInstanceState)
         }
     }
@@ -27,14 +28,13 @@ abstract class BaseActivity : AppCompatActivity(),ActivityDelegateHolder {
     }
 
     override fun onBackPressed() {
-        if(!delegate.onBackPressed())super.onBackPressedDispatcher.onBackPressed()
+        if (!delegate.onBackPressed()) super.onBackPressed()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _delegate = null
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         return delegate.onSupportNavigateUp() ?: super.onSupportNavigateUp()
@@ -46,21 +46,15 @@ abstract class BaseActivity : AppCompatActivity(),ActivityDelegateHolder {
         delegate.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         delegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-
-
     /**
-     * Use this method to add all need side-effect plugins by using [manager]
+     * Use this method to add all needed side-effect plugins by using [manager].
      */
-
-    abstract fun registerPlugins(manger: SideEffectPluginsManager)
+    abstract fun registerPlugins(manager: SideEffectPluginsManager)
 
 }

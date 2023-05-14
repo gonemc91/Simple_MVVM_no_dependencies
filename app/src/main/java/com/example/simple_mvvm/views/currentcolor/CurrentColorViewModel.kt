@@ -42,7 +42,6 @@ class CurrentColorViewModel(
     init {
         colorsRepository.addListener(colorListener)
         load()
-
     }
 
     override fun onCleared() {
@@ -73,10 +72,5 @@ class CurrentColorViewModel(
     private fun load(){
         colorsRepository.getCurrentColor().into(_currentColor)
     }
-
-
-
-
-
 
 }

@@ -3,7 +3,7 @@ package com.example.foundation.views
 import android.os.Parcelable
 
 
-interface BaseScreen: Parcelable {
+interface BaseScreen: java.io.Serializable {
 
     /**
      * Base class for defining screen arguments.

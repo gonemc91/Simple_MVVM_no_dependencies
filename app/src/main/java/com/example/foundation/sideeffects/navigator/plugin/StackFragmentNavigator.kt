@@ -23,9 +23,9 @@ import com.example.foundation.views.BaseScreen.Companion.ARG_SCREEN
 class StackFragmentNavigator(
     @IdRes private val containerId: Int,
     private val defaultTitle: String,
-    private val animation: Animations,
+    private val animations: Animations,
     private val initialScreenCreator: () -> BaseScreen
-) : Navigator, SideEffectImplementation(), LifecycleObserver {
+) : SideEffectImplementation(), Navigator, LifecycleObserver {
 
     private var result: Event<Any>? = null
 
@@ -42,6 +42,7 @@ class StackFragmentNavigator(
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requireActivity().lifecycle.addObserver(this)
         if (savedInstanceState == null) {
             //define the initial screen that should be launched when app starts.
             launchFragment(
@@ -49,9 +50,7 @@ class StackFragmentNavigator(
                 addToBackStack = false
             )
         }
-            requireActivity().supportFragmentManager.registerFragmentLifecycleCallbacks(
-            fragmentsCallbacks,
-            false
+            requireActivity().supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentsCallbacks, false
         )
     }
 
@@ -75,28 +74,6 @@ class StackFragmentNavigator(
        requireActivity().onBackPressedDispatcher.onBackPressed()
         return true
     }
-
-
-    fun launchFragment(screen: BaseScreen, addToBackStack: Boolean = true) {
-        // as screen classes are inside fragments -> we can create fragment directly from screen
-        val fragment = screen.javaClass.enclosingClass.newInstance() as Fragment
-        //set screen object as fragment's argument
-        fragment.arguments = bundleOf(ARG_SCREEN to screen)
-
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        if (addToBackStack) transaction.addToBackStack(null)
-        transaction
-            .setCustomAnimations(
-                animation.enterAnim,
-                animation.exitAnim,
-                animation.popEnterAnim,
-                animation.popExitAnim
-            )
-            .replace(containerId, fragment)
-            .commit()
-
-    }
-
     override fun onRequestUpdates() {
         val f = getCurrentFragment()
 
@@ -114,6 +91,27 @@ class StackFragmentNavigator(
             requireActivity().supportActionBar?.title = defaultTitle
         }
     }
+
+
+    private fun launchFragment(screen: BaseScreen, addToBackStack: Boolean = true) {
+        // as screen classes are inside fragments -> we can create fragment directly from screen
+        val fragment = screen.javaClass.enclosingClass.newInstance() as Fragment
+        //set screen object as fragment's argument
+        fragment.arguments = bundleOf(ARG_SCREEN to screen)
+
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        if (addToBackStack) transaction.addToBackStack(null)
+        transaction
+            .setCustomAnimations(
+                animations.enterAnim,
+                animations.exitAnim,
+                animations.popEnterAnim,
+                animations.popExitAnim
+            )
+            .replace(containerId, fragment)
+            .commit()
+    }
+
 
     private fun publishResults(fragmet: Fragment){
         val result = result?.getValue() ?: return

@@ -1,6 +1,7 @@
 package com.example.simple_mvvm
 
 import android.os.Bundle
+import android.util.Log
 import com.example.foundation.sideeffects.SideEffectPluginsManager
 import com.example.foundation.sideeffects.dialogs.Dialogs
 import com.example.foundation.sideeffects.dialogs.plugin.DialogsPlugin
@@ -22,6 +23,7 @@ import com.example.simple_mvvm.views.currentcolor.CurrentColorFragment
 class MainActivity : BaseActivity() {
 
     override fun registerPlugins(manger: SideEffectPluginsManager) = with(manger){
+        Log.d("MyLog", "Register Plugin")
         val navigator = createNavigator()
         register(ToastsPlugin())
         register(ResourcesPlugin())
@@ -29,7 +31,6 @@ class MainActivity : BaseActivity() {
         //register this [PermissionPlugin()]
         register(DialogsPlugin())
         register(IntentsPlugin())
-
 
     }
 
@@ -42,13 +43,13 @@ class MainActivity : BaseActivity() {
     private fun createNavigator() = StackFragmentNavigator(
         containerId = R.id.fragmentContainer,
         defaultTitle = getString(R.string.app_name),
-        animation = StackFragmentNavigator.Animations(
+        animations = StackFragmentNavigator.Animations(
             enterAnim = R.anim.enter,
             exitAnim = R.anim.exit,
             popEnterAnim = R.anim.pop_enter,
             popExitAnim = R.anim.pop_exit
         ),
-        initialScreenCreator = {CurrentColorFragment.Screen()}
+        initialScreenCreator = { CurrentColorFragment.Screen() }
     )
 
 }

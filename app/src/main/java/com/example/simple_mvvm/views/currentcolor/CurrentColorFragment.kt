@@ -2,6 +2,7 @@ package com.example.simple_mvvm.views.currentcolor
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +17,7 @@ import kotlinx.parcelize.Parcelize
 class CurrentColorFragment : BaseFragment() {
 
     //no arguments for this screen
-    @Parcelize
-    class Screen: BaseScreen
+    class  Screen: BaseScreen
 
     override val viewModel by screenViewModel<CurrentColorViewModel>()
 
@@ -26,6 +26,7 @@ class CurrentColorFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("MyLog", "RUN FRAGMENT CurrentColor")
         val binding = FragmentCurrentColorBinding.inflate(inflater, container, false)
 
         viewModel.currentColor.observe(viewLifecycleOwner){result->

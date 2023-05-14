@@ -44,8 +44,9 @@ open class BaseViewModel(
 
     }
 
-    fun onBackPressed(){
+    fun onBackPressed(): Boolean{
         clearTasks()
+        return false
     }
 
     fun <T> Task<T>.safeEnqueue (listener: TaskListener<T>? = null){

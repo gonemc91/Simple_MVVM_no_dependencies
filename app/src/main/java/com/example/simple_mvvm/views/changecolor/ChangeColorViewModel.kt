@@ -7,8 +7,10 @@ import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.tasks.dispatchers.Dispatcher
 import com.example.foundation.model.tasks.factories.TasksFactory
+import com.example.foundation.sideeffects.dialogs.Dialogs
 import com.example.foundation.sideeffects.navigator.Navigator
-import com.example.foundation.uiactions.UiActions
+import com.example.foundation.sideeffects.resources.Resources
+import com.example.foundation.sideeffects.toast.Toasts
 import com.example.foundation.views.BaseViewModel
 import com.example.foundation.views.LiveResult
 import com.example.foundation.views.MediatorLiveResult
@@ -19,8 +21,9 @@ import com.example.simple_mvvm.model.colors.NamedColor
 
 class ChangeColorViewModel(
     screen: ChangeColorFragment.Screen,
-    private val navigator: Navigator,
-    private val uiActions: UiActions,
+    private val toasts: Toasts,
+    private  val navigator: Navigator,
+    private val resource: Resources,
     private val colorRepository: ColorsRepository,
     private val tasksFactory: TasksFactory,
     savedStateHandle: SavedStateHandle,
@@ -42,9 +45,9 @@ class ChangeColorViewModel(
     var screenTitle: LiveData<String> = viewState.map { result->
         if (result is SuccessResult){
             val currentColor = result.data.colorsList.first{it.selected}
-            uiActions.getString(R.string.change_color_screen_title, currentColor.namedColor.name)
+            resource.getString(R.string.change_color_screen_title, currentColor.namedColor.name)
         }else{
-            uiActions.getString(R.string.change_color_screen_title_simple)
+            resource.getString(R.string.change_color_screen_title_simple)
         }
     }
 
@@ -119,7 +122,7 @@ class ChangeColorViewModel(
         _saveInProgress.value = false
         when(result){
             is SuccessResult -> navigator.goBack(result.data)
-            is ErrorResult -> uiActions.toast(uiActions.getString(R.string.error_happened))
+            is ErrorResult -> toasts.toast(resource.getString(R.string.error_happened))
         }
 
     }
