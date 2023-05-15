@@ -1,13 +1,17 @@
 package com.example.simple_mvvm.views.currentcolor
 
+import android.Manifest
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.takeSuccess
 import com.example.foundation.model.tasks.dispatchers.Dispatcher
 import com.example.foundation.model.tasks.factories.TasksFactory
 import com.example.foundation.sideeffects.dialogs.Dialogs
+import com.example.foundation.sideeffects.dialogs.plugin.DialogConfig
 import com.example.foundation.sideeffects.intents.Intents
 import com.example.foundation.sideeffects.navigator.Navigator
+import com.example.foundation.sideeffects.permissions.Permissions
+import com.example.foundation.sideeffects.permissions.plugin.PermissionStatus
 import com.example.foundation.sideeffects.resources.Resources
 import com.example.foundation.sideeffects.toast.Toasts
 import com.example.foundation.views.BaseViewModel
@@ -23,6 +27,7 @@ class CurrentColorViewModel(
     private val navigator: Navigator,
     private val toasts: Toasts,
     private val resources: Resources,
+    private val permissions: Permissions,
     private val intents: Intents,
     private val dialogs: Dialogs,
     private val tasksFactory: TasksFactory,
@@ -65,12 +70,31 @@ class CurrentColorViewModel(
         navigator.launch(screen)
     }
 
+
+
+    fun requestPermission() = tasksFactory.async<Unit> {
+        dialogs.show(createPermissionAlreadyGrantedDialog()).await()
+        }.safeEnqueue()
+
     fun tryAgain(){
-     load()
+        load()
     }
 
     private fun load(){
         colorsRepository.getCurrentColor().into(_currentColor)
     }
+
+    private fun createPermissionAlreadyGrantedDialog() = DialogConfig(
+        title = resources.getString(R.string.dialog_permissions_title),
+        message = resources.getString(R.string.permissions_already_granted),
+        positiveButton = resources.getString(R.string.action_OK)
+    )
+
+    private fun createAskForLaunchingAppSettingsDialog() = DialogConfig(
+        title = resources.getString(R.string.dialog_permissions_title),
+        message = resources.getString(R.string.open_app_setting_message),
+        positiveButton = resources.getString(R.string.action_open),
+        negativeButton = resources.getString(R.string.actions_cancel)
+    )
 
 }

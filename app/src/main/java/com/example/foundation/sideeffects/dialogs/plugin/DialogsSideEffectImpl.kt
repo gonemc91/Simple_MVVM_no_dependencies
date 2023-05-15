@@ -2,6 +2,7 @@ package com.example.foundation.sideeffects.dialogs.plugin
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -9,7 +10,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.sideeffects.SideEffectImplementation
 
-@Suppress("DEPRECATION")
 class DialogsSideEffectImpl(
     private val retainedState: DialogsSideEffectMediator.RetainedState
 ) : SideEffectImplementation(), LifecycleObserver {
@@ -33,6 +33,7 @@ class DialogsSideEffectImpl(
     }
 
     fun showDialog(record: DialogsSideEffectMediator.DialogRecord) {
+        Log.d("SideEffect", "showDialog ON")
         val config = record.config
         val emitter = record.emitter
         val builder = AlertDialog.Builder(requireActivity())

@@ -7,7 +7,7 @@ import com.example.foundation.model.tasks.callback.Emitter
 import com.example.foundation.sideeffects.SideEffectMediator
 import com.example.foundation.sideeffects.dialogs.Dialogs
 
-class DialogsSideEffectMediator  : SideEffectMediator<DialogsSideEffectImpl>(), Dialogs {
+class DialogsSideEffectMediator : SideEffectMediator<DialogsSideEffectImpl>(), Dialogs {
 
     var retainedState = RetainedState()
 
