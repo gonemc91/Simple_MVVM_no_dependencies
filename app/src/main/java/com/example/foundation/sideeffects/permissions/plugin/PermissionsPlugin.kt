@@ -8,8 +8,7 @@ import com.example.foundation.sideeffects.SideEffectPlugin
  * Plugin for managing permissions from view-models.
  * This plugin allows using [Permissions] interface to view-model constructor.
  */
-class PermissionsPlugin :
-    SideEffectPlugin<PermissionsSideEffectMediator, PermissionsSideEffectImpl> {
+class PermissionsPlugin : SideEffectPlugin<PermissionsSideEffectMediator, PermissionsSideEffectImpl> {
 
     override val mediatorClass: Class<PermissionsSideEffectMediator>
         get() = PermissionsSideEffectMediator::class.java
@@ -18,8 +17,8 @@ class PermissionsPlugin :
         return PermissionsSideEffectMediator(applicationContext)
     }
 
-    /*override fun createImplementation(mediator: PermissionsSideEffectMediator): PermissionsSideEffectImpl {
-       return PermissionsSideEffectImpl(mediator.retainedState)
-    }*/
+    override fun createImplementation(mediator: PermissionsSideEffectMediator): PermissionsSideEffectImpl {
+        return PermissionsSideEffectImpl(mediator.retainedState)
+    }
 
 }

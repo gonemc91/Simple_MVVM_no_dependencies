@@ -1,6 +1,7 @@
 package com.example.simple_mvvm.views.currentcolor
 
 import android.Manifest
+import android.util.Log
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.takeSuccess
@@ -73,8 +74,27 @@ class CurrentColorViewModel(
 
 
     fun requestPermission() = tasksFactory.async<Unit> {
-        dialogs.show(createPermissionAlreadyGrantedDialog()).await()
-        }.safeEnqueue()
+        val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        val hasPermission = permissions.hasPermissions(permission)
+        if (hasPermission) {
+            Log.d("MyLog", "dialog show")
+            dialogs.show(createPermissionAlreadyGrantedDialog()).await()
+        } else {
+            when (permissions.requestPermission(permission).await()) {
+                PermissionStatus.GRANTED -> {
+                    toasts.toast(resources.getString(R.string.permissions_grated))
+                }
+                PermissionStatus.DENIED -> {
+                    toasts.toast(resources.getString(R.string.permissions_denied))
+                }
+                PermissionStatus.DENIED_FOREVER -> {
+                    if (dialogs.show(createAskForLaunchingAppSettingsDialog()).await()) {
+                        intents.openAppSettings()
+                    }
+                }
+            }
+        }
+    }.safeEnqueue()
 
     fun tryAgain(){
         load()
