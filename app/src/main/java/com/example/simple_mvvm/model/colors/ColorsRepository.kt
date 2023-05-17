@@ -1,7 +1,6 @@
 package com.example.simple_mvvm.model.colors
 
 import com.example.foundation.model.Repository
-import com.example.foundation.model.tasks.Task
 
 typealias ColorListener = (NamedColor) -> Unit
 
@@ -13,7 +12,6 @@ typealias ColorListener = (NamedColor) -> Unit
 
 interface ColorsRepository: Repository {
 
-    /*var currentColor: NamedColor*/
 
     /**
      * Get the list of all available colors that that may be chosen by the user

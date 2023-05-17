@@ -2,13 +2,8 @@ package com.example.simple_mvvm.views.changecolor
 
 import androidx.constraintlayout.motion.utils.ViewState
 import androidx.lifecycle.*
-import com.example.foundation.model.ErrorResult
-import com.example.foundation.model.FinalResult
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
-import com.example.foundation.model.tasks.dispatchers.Dispatcher
-import com.example.foundation.model.tasks.factories.TasksFactory
-import com.example.foundation.sideeffects.dialogs.Dialogs
 import com.example.foundation.sideeffects.navigator.Navigator
 import com.example.foundation.sideeffects.resources.Resources
 import com.example.foundation.sideeffects.toast.Toasts

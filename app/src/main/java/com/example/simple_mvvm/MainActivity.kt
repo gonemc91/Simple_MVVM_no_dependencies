@@ -1,9 +1,7 @@
 package com.example.simple_mvvm
 
 import android.os.Bundle
-import android.util.Log
 import com.example.foundation.sideeffects.SideEffectPluginsManager
-import com.example.foundation.sideeffects.dialogs.Dialogs
 import com.example.foundation.sideeffects.dialogs.plugin.DialogsPlugin
 import com.example.foundation.sideeffects.intents.plugin.IntentsPlugin
 import com.example.foundation.sideeffects.navigator.plugin.NavigatorPlugin
@@ -13,7 +11,6 @@ import com.example.foundation.sideeffects.resources.plugin.ResourcesPlugin
 import com.example.foundation.sideeffects.toast.plugin.ToastsPlugin
 import com.example.foundation.views.activity.BaseActivity
 import com.example.simple_mvvm.views.currentcolor.CurrentColorFragment
-import java.security.Permissions
 
 
 /**

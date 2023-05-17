@@ -2,18 +2,12 @@ package com.example.foundation.views
 
 import androidx.lifecycle.*
 import com.example.foundation.model.ErrorResult
-import com.example.foundation.model.PendingResult
-import com.example.foundation.utils.Event
 import com.example.foundation.model.Result
 import com.example.foundation.model.SuccessResult
-import com.example.foundation.model.tasks.Task
-import com.example.foundation.model.tasks.TaskListener
-import com.example.foundation.model.tasks.dispatchers.Dispatcher
+import com.example.foundation.utils.Event
 import kotlinx.coroutines.launch
 
 
-typealias LiveEvent<T> = LiveData<Event<T>>
-typealias MutableLiveEvent<T> = MutableLiveData<Event<T>>
 
 typealias  LiveResult<T> = LiveData<Result<T>>
 typealias  MutableLiveResult<T> = MutableLiveData<Result<T>>
@@ -26,7 +20,6 @@ typealias  MediatorLiveResult<T> = MediatorLiveData<Result<T>>
 open class BaseViewModel
 : ViewModel() {
 
-    private val tasks = mutableSetOf<Task<*>>()
 
     /**
      * Override this method in child classes if you want to listen for results
@@ -62,8 +55,6 @@ open class BaseViewModel
 
 
     private fun clearTasks(){
-        tasks.forEach { it.cancel() }
-        tasks.clear()
     }
 
 

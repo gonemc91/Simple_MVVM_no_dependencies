@@ -1,7 +1,7 @@
 package com.example.foundation.utils
 
 import android.annotation.SuppressLint
-import com.example.foundation.model.tasks.dispatchers.Dispatcher
+import com.example.foundation.model.dispatchers.Dispatcher
 
 
 typealias ResourceAction<T> = (T) -> Unit

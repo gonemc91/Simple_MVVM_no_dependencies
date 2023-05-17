@@ -1,7 +1,7 @@
 package com.example.foundation.sideeffects.toast.plugin
 
 import android.content.Context
-import com.example.foundation.model.tasks.dispatchers.MainThreadDispatcher
+import com.example.foundation.model.dispatchers.MainThreadDispatcher
 import com.example.foundation.sideeffects.SideEffectMediator
 import com.example.foundation.sideeffects.toast.Toasts
 import android.widget.Toast
