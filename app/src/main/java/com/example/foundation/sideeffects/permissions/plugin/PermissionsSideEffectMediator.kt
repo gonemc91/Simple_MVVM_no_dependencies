@@ -1,5 +1,6 @@
 package com.example.foundation.sideeffects.permissions.plugin
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
@@ -20,7 +21,7 @@ class PermissionsSideEffectMediator(
         return ContextCompat.checkSelfPermission(appContext, permission) == PackageManager.PERMISSION_GRANTED
     }
 
-    override fun requestPermission(permission: String): Task<PermissionStatus> = CallbackTask.create { emitter ->
+    override suspend fun requestPermission(permission: String): PermissionStatus = CallbackTask.create<PermissionStatus> { emitter ->
         if (retainedState.emitter != null) {
             emitter.emit(ErrorResult(IllegalStateException("Only one permission request can be active")))
             return@create
@@ -29,7 +30,7 @@ class PermissionsSideEffectMediator(
         target { implementation ->
             implementation.requestPermission(permission)
         }
-    }
+    }.suspend()
 
     class RetainedState(
         var emitter: Emitter<PermissionStatus>? = null
