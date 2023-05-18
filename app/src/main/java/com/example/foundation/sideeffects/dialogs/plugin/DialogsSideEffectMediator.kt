@@ -1,7 +1,7 @@
 package com.example.foundation.sideeffects.dialogs.plugin
 
-import com.example.foundation.model.Emitter
 import com.example.foundation.model.ErrorResult
+import com.example.foundation.model.coroutines.Emitter
 import com.example.foundation.model.toEmitter
 import com.example.foundation.sideeffects.SideEffectMediator
 import com.example.foundation.sideeffects.dialogs.Dialogs

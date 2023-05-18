@@ -1,4 +1,4 @@
-package com.example.foundation.model
+package com.example.foundation.model.coroutines
 
 import com.example.foundation.model.FinalResult
 

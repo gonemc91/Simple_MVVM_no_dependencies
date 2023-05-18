@@ -1,11 +1,13 @@
 package com.example.foundation.model
 
+import com.example.foundation.model.coroutines.CancelListener
+import com.example.foundation.model.coroutines.Emitter
 import kotlinx.coroutines.CancellableContinuation
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-fun <T> CancellableContinuation<T>.toEmitter(): Emitter<T>{
+fun <T> CancellableContinuation<T>.toEmitter(): Emitter<T> {
     return object : Emitter<T>{
 
         var isDone = AtomicBoolean(false)

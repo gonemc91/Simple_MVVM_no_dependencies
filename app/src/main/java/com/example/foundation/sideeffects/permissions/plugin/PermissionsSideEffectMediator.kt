@@ -3,8 +3,8 @@ package com.example.foundation.sideeffects.permissions.plugin
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
-import com.example.foundation.model.Emitter
 import com.example.foundation.model.ErrorResult
+import com.example.foundation.model.coroutines.Emitter
 import com.example.foundation.model.toEmitter
 import com.example.foundation.sideeffects.SideEffectMediator
 import com.example.foundation.sideeffects.permissions.Permissions

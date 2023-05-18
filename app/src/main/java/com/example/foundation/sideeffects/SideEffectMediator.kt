@@ -1,8 +1,8 @@
 package com.example.foundation.sideeffects
 
-import com.example.foundation.model.dispatchers.Dispatcher
-import com.example.foundation.model.dispatchers.MainThreadDispatcher
+import com.example.foundation.utils.MainThreadExecutor
 import com.example.foundation.utils.ResourceActions
+import java.util.concurrent.Executor
 
 
 /**
@@ -12,21 +12,21 @@ import com.example.foundation.utils.ResourceActions
  *
  */
 
-open class SideEffectMediator<Implementation> (
-    dispatcher: Dispatcher = MainThreadDispatcher()
-){
+open class SideEffectMediator<Implementation>(
+    executor: Executor = MainThreadExecutor()
+) {
 
-    protected val target = ResourceActions<Implementation>(dispatcher)
+    protected val target = ResourceActions<Implementation>(executor)
+
     /**
-     * Assign/unassigned the target implementation for this provider.
+     * Assign/unassign the target implementation for this mediator.
      */
-    fun setTarget(target: Implementation?){
+    fun setTarget(target: Implementation?) {
         this.target.resource = target
     }
 
-    fun clear(){
+    fun clear() {
         target.clear()
     }
-
 
 }

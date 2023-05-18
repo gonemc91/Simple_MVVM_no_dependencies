@@ -1,7 +1,7 @@
 package com.example.foundation.utils
 
 import android.annotation.SuppressLint
-import com.example.foundation.model.dispatchers.Dispatcher
+import java.util.concurrent.Executor
 
 
 typealias ResourceAction<T> = (T) -> Unit
@@ -11,7 +11,7 @@ typealias ResourceAction<T> = (T) -> Unit
  */
 
 class ResourceActions<T>(
-    private val dispatcher: Dispatcher
+    private val executor: Executor
 ) {
 
     var resource: T? = null
@@ -19,7 +19,7 @@ class ResourceActions<T>(
         field = newValue
         if(newValue != null){
             actions.forEach{action->
-                dispatcher.dispatch {
+                executor.execute {
                     action(newValue)
                 }
             }
