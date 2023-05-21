@@ -28,7 +28,7 @@ abstract class BaseActivity : AppCompatActivity(), ActivityDelegateHolder {
     }
 
     override fun onBackPressed() {
-        if (!delegate.onBackPressed()) super.onBackPressed()
+       super.onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onDestroy() {

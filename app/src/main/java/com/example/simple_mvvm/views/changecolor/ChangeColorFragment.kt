@@ -12,9 +12,9 @@ import com.example.foundation.views.HasScreenTitle
 import com.example.foundation.views.screenViewModel
 import com.example.simple_mvvm.R
 import com.example.simple_mvvm.databinding.FragmentChangeColorBinding
+import com.example.simple_mvvm.views.collectFlow
 import com.example.simple_mvvm.views.onTryAgain
 import com.example.simple_mvvm.views.renderSimpleResult
-import kotlinx.parcelize.Parcelize
 
 
 /**
@@ -56,15 +56,18 @@ class ChangeColorFragment: BaseFragment(), HasScreenTitle {
         setupLayoutManger(binding, adapter)
 
         binding.saveButton.setOnClickListener {viewModel.onSavedPressed()}
-
         binding.cancelButton.setOnClickListener {viewModel.onCancelPressed()}
 
-        viewModel.viewState.observe(viewLifecycleOwner) { result->
-            renderSimpleResult(binding.root, result){viewState->
+
+        collectFlow(viewModel.viewState){result->
+            renderSimpleResult(binding.root, result){viewState ->
                 adapter.items = viewState.colorsList
                 binding.saveButton.visibility = if (viewState.showSaveButton) View.VISIBLE else View.INVISIBLE
                 binding.cancelButton.visibility = if (viewState.showCancelButton) View.VISIBLE else View.INVISIBLE
-                binding.saveProgressBar.visibility = if (viewState.showSaveProgressBar) View.VISIBLE else View.GONE
+
+                binding.savedProgressGroup.visibility = if (viewState.showSaveProgressBar) View.VISIBLE else View.GONE
+                binding.saveProgressBar.progress = viewState.saveProgressPercentage
+                binding.savingPercentageTextView.text = viewState.saveProgressPercentageMessage
             }
         }
 
@@ -72,18 +75,11 @@ class ChangeColorFragment: BaseFragment(), HasScreenTitle {
             // if screen title is changed -> need to notify activity about updates
             notifyScreenUpdates()
         }
-
         onTryAgain(binding.root){
             viewModel.tryAgain()
         }
-
         return binding.root
-
     }
-
-
-
-
     private fun setupLayoutManger(binding: FragmentChangeColorBinding, adapter: ColorsAdapter) {
         //waiting for list width
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :

@@ -5,6 +5,8 @@ import com.example.foundation.model.ErrorResult
 import com.example.foundation.model.Result
 import com.example.foundation.model.SuccessResult
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 
 
 typealias  LiveResult<T> = LiveData<Result<T>>
@@ -17,32 +19,31 @@ typealias  MediatorLiveResult<T> = MediatorLiveData<Result<T>>
 
 open class BaseViewModel: ViewModel() {
 
-    private val coroutineContext = SupervisorJob() + Dispatchers.Main.immediate + CoroutineExceptionHandler{_, throwable ->
+    private val coroutineContext = SupervisorJob() + Dispatchers.Main.immediate + CoroutineExceptionHandler {_, throwable ->
         // you can add some exception handling here
 
     }
 
     // custom scope which cancels jobs immediately when back button is pressed
-    protected val viewModelScope = CoroutineScope(coroutineContext)
+    protected val viewModelScope: CoroutineScope = CoroutineScope(coroutineContext)
 
 
+
+    override fun onCleared() {
+        super.onCleared()
+        clearViewModelScope()
+    }
     /**
      * Override this method in child classes if you want to listen for results
      * from other screens
      */
 
-    override fun onCleared() {
-        super.onCleared()
-        clearTasks()
-
-    }
-
     open fun onResult(result: Any){
 
     }
 
-    fun onBackPressed(): Boolean{
-        clearTasks()
+    open fun onBackPressed(): Boolean{
+      clearViewModelScope()
         return false
     }
     /**
@@ -55,14 +56,42 @@ open class BaseViewModel: ViewModel() {
             try {
                 liveResult.postValue(SuccessResult(block()))
             }catch (e: Exception){
-                liveResult.postValue(ErrorResult(e))
+               if(e !is CancellationException) liveResult.postValue(ErrorResult(e))
+            }
+        }
+
+    }
+    fun <T> into(stateFlow: MutableStateFlow<Result<T>>, block : suspend () -> T){
+        viewModelScope.launch {
+            try {
+                stateFlow.value = SuccessResult(block())
+            }catch (e: Exception){
+                if (e !is CancellationException) stateFlow.value = ErrorResult(e)
             }
         }
 
     }
 
+    fun <T> SavedStateHandle.getStateFlowMy(key: String, initialValue: T): MutableStateFlow<T>{
+        val savedStateHandle = this
+        val mutableFlow = MutableStateFlow(savedStateHandle[key] ?: initialValue)
 
-    private fun clearTasks(){
+        viewModelScope.launch {
+            mutableFlow.collect{
+                savedStateHandle[key] = it
+            }
+        }
+
+        viewModelScope.launch {
+            savedStateHandle.getLiveData<T>(key).asFlow().collect{
+                mutableFlow.value = it
+            }
+        }
+        return mutableFlow
+    }
+
+
+    private fun clearViewModelScope(){
         viewModelScope.cancel()
     }
 

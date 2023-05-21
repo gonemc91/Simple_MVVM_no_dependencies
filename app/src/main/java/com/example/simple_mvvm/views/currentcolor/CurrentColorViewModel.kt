@@ -2,7 +2,6 @@ package com.example.simple_mvvm.views.currentcolor
 
 import android.Manifest
 import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.example.foundation.model.PendingResult
 import com.example.foundation.model.SuccessResult
 import com.example.foundation.model.takeSuccess
@@ -22,6 +21,7 @@ import com.example.simple_mvvm.model.colors.ColorListener
 import com.example.simple_mvvm.model.colors.ColorsRepository
 import com.example.simple_mvvm.model.colors.NamedColor
 import com.example.simple_mvvm.views.changecolor.ChangeColorFragment
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CurrentColorViewModel(
@@ -37,21 +37,18 @@ class CurrentColorViewModel(
     private val _currentColor = MutableLiveResult<NamedColor>(PendingResult())
     var currentColor: LiveResult<NamedColor> = _currentColor
 
-    private val colorListener: ColorListener = {
-        _currentColor.postValue(SuccessResult(it))
-    }
 
     //--- example of listening results via model layer
 
     init {
-        colorsRepository.addListener(colorListener)
+        viewModelScope.launch {
+            colorsRepository.listenCurrentListener().collect{
+                 _currentColor.postValue(SuccessResult(it))
+                }
+        }
         load()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        colorsRepository.removeListener(colorListener)
-    }
 
     //example of listening results directly from the screen
     override fun onResult(result: Any) {

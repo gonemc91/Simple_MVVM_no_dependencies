@@ -27,7 +27,7 @@ abstract class SideEffectImplementation {
     }
 
     open fun onSaveInstanceState(outBundle: Bundle){}
-    open fun onActivityResult(requestCode: Int, permission: Int, granted: Intent?) {}
+    open fun onActivityResult(requestCode: Int, permission: Int, data: Intent?) {}
     open fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, granted: IntArray) {}
 
     internal fun injectActivity(activity: AppCompatActivity){

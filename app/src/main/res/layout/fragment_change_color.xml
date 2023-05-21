@@ -20,36 +20,76 @@
         android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/save"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
-        app:layout_constraintStart_toEndOf="@id/cancelButton"
+        android:text="@string/save"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/cancelButton"
+        tools:visibility="invisible" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
         android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         android:backgroundTint="@color/white"
-        android:textColor="@color/black"
         android:text="@string/cancel"
+        android:textColor="@color/black"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/saveButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/saveButton"/>
+        tools:visibility="invisible" />
 
     <include layout="@layout/part_result"/>
 
-    <ProgressBar
-        android:id="@+id/saveProgressBar"
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/savedProgressGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="savingHintTextView,savingPercentageTextView,saveProgressBar" />
+
+    <TextView
+        android:id="@+id/savingHintTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/please_wait"
+        app:layout_constraintStart_toStartOf="@+id/saveProgressBar"
+        app:layout_constraintBottom_toTopOf="@id/saveProgressBar"
+        />
+
+    <TextView
+        android:id="@+id/savingPercentageTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textSize="16sp"
+        tools:text="100%"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/saveProgressBar"
+        app:layout_constraintBottom_toBottomOf="@id/saveProgressBar"
+        />
+
+
+    <ProgressBar
+        android:id="@+id/saveProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="8dp"
+        android:max="100"
+        tools:progress="33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/savingPercentageTextView"
         app:layout_constraintTop_toTopOf="@id/saveButton"
         app:layout_constraintBottom_toBottomOf="@id/saveButton"
         />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
