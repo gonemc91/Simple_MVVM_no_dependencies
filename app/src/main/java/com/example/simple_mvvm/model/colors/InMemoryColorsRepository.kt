@@ -61,6 +61,7 @@ class InMemoryColorsRepository(
             while (progress<100){
                 progress += 2
                 delay(30)
+               /* if (progress>60) throw java.lang.IllegalStateException("Valhalla Calling")*/
                 emit(progress)
             }
             currentColor = color
